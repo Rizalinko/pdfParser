@@ -2,7 +2,7 @@
 import sys, os
 import pandas as pd
 
-article = '950266001P1'
+article = '651838001P10'
 filename = '2019 Spares - BNR BNA6 EUR V2'
 
 def getDataframe():
@@ -11,14 +11,20 @@ def getDataframe():
     else:
         from tabula import read_pdf
         df = read_pdf(filename+'.pdf' ,pages = 'all')
-        df = df[0]
 
     return df
 
-def getPrice(df):
-    index = df.index[df['Part number'] == article].tolist()[0]
-    price = df.iloc[index]['Price EUR']
-    print('{} EUR'.format(price))
+def getPrice(df_all):
+    for df in df_all:
+        try:
+            index = df.index[df['Part number'] == article].tolist()[0]
+            price = df.iloc[index]['Price EUR']
+            print('{} EUR'.format(price))
+            break
+        except IndexError:
+            pass
+    return
+
 
 
 
